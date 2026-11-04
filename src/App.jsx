@@ -1,7 +1,11 @@
 import { useState, useEffect } from 'react'
+
 import Blog from './components/Blog'
 import Create from './components/BlogForm'
 import Notification from './components/Notification'
+import LoginForm from './components/LoginForm'
+import Togglable from './components/Togglable'
+
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -57,31 +61,27 @@ const App = () => {
       return newBlog
     }
 
-    const loginForm = () => (
-      <form onSubmit={handleLogin}>
-        <div>
-          <label>
-            username
-            <input
-              type="text"
-              value={username}
-              onChange={({ target }) => setUsername(target.value)}
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            password
-            <input
-              type="password"
-              value={password}
-              onChange={({ target }) => setPassword(target.value)}
-            />
-          </label>
-        </div>
-        <button type="submit">login</button>
-      </form>
-    )
+    const loginForm = () => {
+      return (
+        <Togglable buttonLabel='login'>
+          <LoginForm
+            handleLogin = {handleLogin}
+            handleUsernameChange = {({ target }) => setUsername(target.value)}
+            handlePasswordChange = {({ target }) => setPassword(target.value)}
+            username = {username}
+            password = {password}
+          />
+        </Togglable>
+      )
+    }
+
+    const createBlogForm = () => {
+      return (
+        <Togglable buttonLabel='Create new blog'>
+          <Create createBlog={handleBlogCreate}/>
+        </Togglable>
+      )
+    }
 
   return (
     <div>
@@ -94,9 +94,8 @@ const App = () => {
       <div>
         <p>{user.name} logged in</p>
         <button onClick={handleLogout}>Logout</button>
-
-        <Create createBlog={handleBlogCreate}/>
-
+        {createBlogForm()}
+        <br/>
         {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
         )}
