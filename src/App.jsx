@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { jwtDecode } from 'jwt-decode'
 
 import Blog from './components/Blog'
 import Create from './components/BlogForm'
@@ -29,6 +30,18 @@ const App = () => {
     }
   }, [])
 
+  useEffect(() => {
+    if (!user) return
+
+    const expiresAt = jwtDecode(user.token).exp * 1000
+    const timer = setTimeout(() => {
+      window.localStorage.removeItem('loggedBloglistUser')
+      blogService.setToken(null)
+      setUser(null)
+    }, expiresAt - Date.now() )
+    return () => clearTimeout(timer)
+  }, [user])
+
     const handleLogin = async event => {
       event.preventDefault()
       try {
@@ -40,11 +53,8 @@ const App = () => {
         setUsername('')
         setPassword('')
       } catch {
-        setNotif('wrong credentials')
-
-        setTimeout(() => {
-            setNotif(null)
-        }, 4000)
+        setNotif('Error, wrong credentials.')
+        setTimeout(() => {setNotif(null)}, 4000)
       }
     }
 
@@ -74,11 +84,33 @@ const App = () => {
         setBlogs(blogs.map(b => (b.id === updatedBlog.id ? updatedBlog : b)))
     }
 
+    const removeBlog = async (blog) => {
+      if (!window.confirm(`Remove blog "${blog.title}"?`)) {
+        return
+      }
+
+      try {
+        await blogService.deleteBlog(blog.id)
+        setBlogs(blogs.filter(b => b.id !== blog.id))
+        setNotif('Blog deleted successfully.')
+        setTimeout(() => {setNotif(null)}, 4000)
+      } catch {
+        setNotif('Error, blog could not be deleted.')
+        setTimeout(() => {setNotif(null)}, 4000)
+      }
+    }
+
     const blogList = () => {
+      const sortedBlogs = [...blogs].sort((blog1, blog2) => blog2.likes - blog1.likes) //sort COPY of blogs by likes descending
       return (
-        blogs.map(blog =>
-          <div key={blog.id} style={{ display: 'flex', padding: '5px', border: 'solid black', marginBottom: '5px' }}>
+        sortedBlogs.map(blog =>
+          <div key={blog.id} style={{ padding: '5px', border: 'solid black', marginBottom: '5px' }}>
             <Blog blog={blog} likeBlog={likeBlog}/>
+            {blog.user.id === user.id && 
+              <div style={{paddingLeft: '10px', paddingBottom: '10px'}}>
+                <button onClick={() => removeBlog(blog)}> remove </button>
+              </div>
+            }
           </div>
         )
     )}
@@ -87,8 +119,16 @@ const App = () => {
 
     const addBlog = async (blogObject) => {
         blogFormRef.current.toggleVisibility()
-        const newBlog = await blogService.createBlog(blogObject)
-        setBlogs(blogs.concat(newBlog))
+        try {
+          const newBlog = await blogService.createBlog(blogObject)
+          setBlogs(blogs.concat(newBlog))
+          setNotif('Blog created successfully!')
+          setTimeout(() => {setNotif(null)}, 4000)
+        } catch {
+          setNotif('Error, blog could not be created.')
+          setTimeout(() => {setNotif(null)}, 4000)
+        }
+
     }
 
     const createBlogForm = () => {
