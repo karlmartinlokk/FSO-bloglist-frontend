@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 
-test('initially render only title and author', () => {
-    const blog = {
+const blog = {
         title: 'Component testing is done with react-testing-library',
         author: 'mluukkai',
         url: 'some url',
@@ -10,6 +10,7 @@ test('initially render only title and author', () => {
         user: '6ae2241983242283574249f3'
     }
 
+test('initially render only title and author', () => {
     render(<Blog blog={blog}/>)
 
     const title =  screen.getByText('Component testing is done with react-testing-library')
@@ -24,4 +25,18 @@ test('initially render only title and author', () => {
     expect(url).not.toBeVisible()
     expect(likes).not.toBeVisible()
 
+})
+
+test('show url and likes on button click', async () => {
+    render(<Blog blog={blog}/>)
+
+    const user = userEvent.setup()
+    const button = screen.getByText('view')
+    await user.click(button)
+
+    const url = screen.getByText('some url')
+    const likes = screen.getByText(0)
+
+    expect(url).toBeVisible()
+    expect(likes).toBeVisible()
 })
