@@ -29,5 +29,18 @@ export default [
         { allowConstantExport: true }
       ]
     }
+  },
+  {
+  files: ['**/*.test.{js,jsx}'],
+  languageOptions: {
+    globals: {
+      test: 'readonly',
+      expect: 'readonly',
+      describe: 'readonly',
+      vi: 'readonly',
+      beforeEach: 'readonly',
+      afterEach: 'readonly'
+    }
   }
+}
 ]
