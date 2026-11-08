@@ -4,7 +4,10 @@ const Notification = ({ message }) => {
     }
 
     return (
-        <h3>{message}</h3>
+        <div className='notification'>
+            <h3>{message}</h3>
+        </div>
+        
     )
 }
 

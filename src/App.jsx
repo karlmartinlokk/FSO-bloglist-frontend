@@ -152,7 +152,9 @@ const App = () => {
         <button onClick={handleLogout}>Logout</button>
         {createBlogForm()}
         <br/>
-        {blogList()}
+        <div className='allBlogs'>
+          {blogList()}
+        </div>
       </div>
       )}
 

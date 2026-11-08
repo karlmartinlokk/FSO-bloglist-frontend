@@ -13,9 +13,12 @@ const Blog = ({ blog, likeBlog }) => {
     </div>
     <br/>
 
-    <Togglable openLabel='view' closeLabel='hide'>
+    <Togglable className='view' openLabel='view' closeLabel='hide'>
       <div>{blog.url}</div>
-      <div>{blog.likes} <button onClick={() => likeBlog(blog)}>like</button></div>
+      <div>
+        <span className="likeCount">{blog.likes}</span> 
+        <button onClick={() => likeBlog(blog)}>like</button>
+      </div>
       <div>{blog.user.name}</div>
       <br/>
     </Togglable>
