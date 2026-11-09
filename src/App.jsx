@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react'
+import { Routes, Route, Link, useNavigate } from 'react-router-dom'
+
 import BlogList from './components/BlogList'
 import Login from './components/Login'
 import BlogCreate from './components/BlogCreate'
@@ -9,6 +11,8 @@ import { jwtDecode } from 'jwt-decode'
 const App = () => {
   const [user, setUser] = useState(null)
   const [blogs, setBlogs] = useState([])
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     blogService.getAll().then(blogs => setBlogs( blogs ))
@@ -40,24 +44,48 @@ const App = () => {
     window.localStorage.removeItem('loggedBloglistUser')
     setUser(null)
     blogService.setToken(null)
+    navigate('/')
+  }
+
+  const padding = {
+    padding: 5
   }
 
   return (
-    <div>
-      <h1>Bloglist</h1>
-      {user === null
-        ? <Login setUser={setUser}/>
-        : (
-          <div>
-            <h4>Logged in as {user.name}</h4>
-            <button onClick={handleLogout}>Logout</button>
-            <br/>
-            <BlogCreate blogs={blogs} setBlogs={setBlogs}/>
-            <BlogList user={user} blogs={blogs} setBlogs={setBlogs}/>
-          </div>
-        )}
+    <>
+      <div>
+        <Link style={padding} to="/">blogs</Link>
+        <Link style={padding} to="/create">new blog</Link>
+        <Link style={padding} to="/login">
+          {user === null
+            ? <div style={{ display: 'inline-flex' }}>login</div>
+            : <button onClick={handleLogout}>logout</button>
+          }
+        </Link>
+      </div>
 
-    </div>
+      <Routes>
+        <Route path="/" element={
+          user === null
+            ? <Login setUser={setUser}/>
+            : <div>
+              <h4>Logged in as {user.name}</h4>
+              <BlogList user={user} blogs={blogs} setBlogs={setBlogs}/>
+            </div>
+        } />
+        <Route path="/create" element={
+          user === null
+            ? <Login setUser={setUser}/>
+            : <div>
+              <h4>Logged in as {user.name}</h4>
+              <BlogCreate blogs={blogs} setBlogs={setBlogs}/>
+            </div>
+        } />
+        <Route path="/login" element={
+          <Login setUser={setUser}/>
+        } />
+      </Routes>
+    </>
   )
 }
 

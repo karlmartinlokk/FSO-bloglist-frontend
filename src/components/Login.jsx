@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import loginService from '../services/login'
 import blogService from '../services/blogs'
 import Notification from './Notification'
@@ -10,6 +11,8 @@ const Login = ({ setUser }) => {
   const [password, setPassword] = useState('')
   const [notif, setNotif] = useState(null)
 
+  const navigate = useNavigate()
+
   const handleLogin = async event => {
     event.preventDefault()
     try {
@@ -20,6 +23,7 @@ const Login = ({ setUser }) => {
       setUser(user)
       setUsername('')
       setPassword('')
+      navigate('/')
     } catch {
       setNotif('Error, wrong credentials.')
       setTimeout(() => {setNotif(null)}, 4000)
