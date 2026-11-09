@@ -7,9 +7,9 @@ const Create = ({ createBlog }) => {
 
   const handleCreate = (event) => {
     event.preventDefault()
-    createBlog({ 
-      title, 
-      author, 
+    createBlog({
+      title,
+      author,
       url,
       'likes': 0,
     })
@@ -26,7 +26,7 @@ const Create = ({ createBlog }) => {
           value={title}
           onChange={({ target }) => setTitle(target.value)}
           placeholder='title'
-          />
+        />
         <br/>
         <input
           type='text'
@@ -45,6 +45,6 @@ const Create = ({ createBlog }) => {
         <button type='submit'>Create</button>
       </form>
     </div>
-)}
+  )}
 
 export default Create

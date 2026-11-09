@@ -2,6 +2,7 @@ import js from '@eslint/js'
 import globals from 'globals'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
+import stylistic from '@stylistic/eslint-plugin'
 
 export default [
   { ignores: ['dist'] },
@@ -18,7 +19,8 @@ export default [
     },
     plugins: {
       'react-hooks': reactHooks,
-      'react-refresh': reactRefresh
+      'react-refresh': reactRefresh,
+      '@stylistic': stylistic
     },
     rules: {
       ...js.configs.recommended.rules,
@@ -27,20 +29,24 @@ export default [
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true }
-      ]
+      ],
+      '@stylistic/indent': ['error', 2],
+      '@stylistic/no-trailing-spaces': 'error',
+      '@stylistic/no-multi-spaces': 'error',
+      '@stylistic/no-multiple-empty-lines': ['error', { max: 1 }]
     }
   },
   {
-  files: ['**/*.test.{js,jsx}'],
-  languageOptions: {
-    globals: {
-      test: 'readonly',
-      expect: 'readonly',
-      describe: 'readonly',
-      vi: 'readonly',
-      beforeEach: 'readonly',
-      afterEach: 'readonly'
+    files: ['**/*.test.{js,jsx}'],
+    languageOptions: {
+      globals: {
+        test: 'readonly',
+        expect: 'readonly',
+        describe: 'readonly',
+        vi: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly'
+      }
     }
   }
-}
 ]
