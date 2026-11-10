@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import loginService from '../services/login'
 import blogService from '../services/blogs'
 import Notification from './Notification'
-import Togglable from './Togglable'
 import LoginForm from './LoginForm'
 
 const Login = ({ setUser }) => {
@@ -32,7 +31,7 @@ const Login = ({ setUser }) => {
 
   const loginForm = () => {
     return (
-      <Togglable openLabel='login' closeLabel='quit'>
+      <>
         <Notification message={notif}/>
         <LoginForm
           handleLogin = {handleLogin}
@@ -41,7 +40,7 @@ const Login = ({ setUser }) => {
           username = {username}
           password = {password}
         />
-      </Togglable>
+      </>
     )
   }
 
