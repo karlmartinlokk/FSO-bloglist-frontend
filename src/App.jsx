@@ -49,10 +49,6 @@ const App = () => {
     : null
 
   const likeBlog = async (blog) => {
-    if (!user) {
-      navigate('/login')
-      return
-    }
     const updatedBlog = await blogService.updateBlog({ ...blog, likes: blog.likes + 1 })
     setBlogs(blogs.map(b => (b.id === updatedBlog.id ? updatedBlog : b)))
   }
@@ -81,6 +77,13 @@ const App = () => {
     }
   }
 
+  const isLoggedIn = () => {
+    if (!user) {
+      return false
+    }
+    return true
+  }
+
   const handleLogout = (event) => {
     event.preventDefault()
     window.localStorage.removeItem('loggedBloglistUser')
@@ -95,7 +98,7 @@ const App = () => {
 
   return (
     <>
-      <div>
+      <div style={{paddingBottom: '5px'}}>
         <Link style={padding} to="/">blogs</Link>
         <Link style={padding} to="/create">new blog</Link>
         {user === null
@@ -119,6 +122,7 @@ const App = () => {
             blog={blog}
             likeBlog={likeBlog}
             isAuthor={userIsAuthor(blog)}
+            isLoggedIn={isLoggedIn(user)}
             removeBlog={removeBlog}
             notif={notif}
           />

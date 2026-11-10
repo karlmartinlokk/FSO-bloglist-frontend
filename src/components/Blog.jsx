@@ -1,7 +1,7 @@
 import Togglable from "./Togglable"
 import Notification from "./Notification"
 
-const Blog = ({ blog, likeBlog, isAuthor, removeBlog, notif }) => {
+const Blog = ({ blog, likeBlog, isAuthor, isLoggedIn, removeBlog, notif }) => {
   if (!blog) return null
   return (
     <>
@@ -17,18 +17,18 @@ const Blog = ({ blog, likeBlog, isAuthor, removeBlog, notif }) => {
         </div>
         <br/>
 
-        <Togglable className='view' openLabel='view' closeLabel='hide'>
-          <div>{blog.url}</div>
-          <div>
-            <span className="likeCount">{blog.likes}</span>
-            <button onClick={() => likeBlog(blog)}>like</button>
-          </div>
-          <div>{blog.user.name}</div>
-          <br/>
-        </Togglable>
+        <div>{blog.url}</div>
+        <div>
+          <span className="likeCount">{blog.likes}</span>
+          { isLoggedIn &&
+              <button onClick={() => likeBlog(blog)}>like</button>
+          }
+        </div>
+        <div>{blog.user.name}</div>
+        <br/>
         { isAuthor === true &&
                 <div style={{paddingBottom: '10px', paddingTop: '5px'}}>
-                  <button onClick={() => removeBlog(blog)}> remove </button>
+                  <button onClick={() => removeBlog(blog)}>remove</button>
                 </div>
         }
       </div>
