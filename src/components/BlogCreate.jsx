@@ -1,19 +1,13 @@
-import { useState, useRef } from 'react'
 import Create from './BlogForm'
-import Togglable from './Togglable'
-import Notification from './Notification'
 import blogService from '../services/blogs'
 
-const BlogCreate = ({ blogs, setBlogs }) => {
-  const [notif, setNotif] = useState(null)
-
-  const blogFormRef = useRef()
+const BlogCreate = ({ blogs, setBlogs, setNotif, navigate }) => {
 
   const addBlog = async (blogObject) => {
-    blogFormRef.current.toggleVisibility()
     try {
       const newBlog = await blogService.createBlog(blogObject)
       setBlogs(blogs.concat(newBlog))
+      navigate('/')
       setNotif('Blog created successfully!')
       setTimeout(() => {setNotif(null)}, 4000)
     } catch {
@@ -23,17 +17,9 @@ const BlogCreate = ({ blogs, setBlogs }) => {
 
   }
 
-  const createBlogForm = () => {
-    return (
-      <Togglable openLabel='Create new blog' closeLabel='Cancel' ref={blogFormRef}>
-        <Create createBlog={addBlog}/>
-      </Togglable>
-    )
-  }
   return(
     <div>
-      <Notification message={notif}/>
-      {createBlogForm()}
+      <Create createBlog={addBlog}/>
     </div>
 
   )

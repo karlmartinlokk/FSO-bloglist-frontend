@@ -49,7 +49,10 @@ const App = () => {
     : null
 
   const likeBlog = async (blog) => {
-    if (!user) navigate('/login')
+    if (!user) {
+      navigate('/login')
+      return
+    }
     const updatedBlog = await blogService.updateBlog({ ...blog, likes: blog.likes + 1 })
     setBlogs(blogs.map(b => (b.id === updatedBlog.id ? updatedBlog : b)))
   }
@@ -125,7 +128,7 @@ const App = () => {
             ? <Login setUser={setUser}/>
             : <div>
               <h4>Logged in as {user.name}</h4>
-              <BlogCreate blogs={blogs} setBlogs={setBlogs}/>
+              <BlogCreate blogs={blogs} setBlogs={setBlogs} setNotif={setNotif} navigate={navigate}/>
             </div>
         } />
         <Route path="/login" element={
