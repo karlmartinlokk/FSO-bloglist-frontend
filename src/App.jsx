@@ -11,6 +11,8 @@ import blogService from './services/blogs'
 
 import { jwtDecode } from 'jwt-decode'
 
+import { Container } from '@mui/material'
+
 const App = () => {
   const [user, setUser] = useState(null)
   const [blogs, setBlogs] = useState([])
@@ -97,7 +99,7 @@ const App = () => {
   }
 
   return (
-    <>
+    <Container>
       <div style={{paddingBottom: '5px'}}>
         <Link style={padding} to="/">blogs</Link>
         <Link style={padding} to="/create">new blog</Link>
@@ -139,7 +141,7 @@ const App = () => {
           <Login setUser={setUser}/>
         } />
       </Routes>
-    </>
+    </Container>
   )
 }
 
