@@ -19,7 +19,7 @@ const Create = ({ createBlog }) => {
     setUrl('')
   }
   return (
-    <div>
+    <div style={{marginTop: '40px'}}>
       <h2>Create new blog:</h2>
       <form onSubmit={handleCreate}>
         <TextField

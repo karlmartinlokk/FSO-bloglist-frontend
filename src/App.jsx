@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Routes, Route, Link, useNavigate, useMatch } from 'react-router-dom'
+import { AppBar, Toolbar, Button } from '@mui/material'
 
 import BlogList from './components/BlogList'
 import Blog from './components/Blog'
@@ -94,20 +95,18 @@ const App = () => {
     navigate('/')
   }
 
-  const padding = {
-    padding: 5
-  }
-
   return (
-    <Container>
-      <div style={{paddingBottom: '5px'}}>
-        <Link style={padding} to="/">blogs</Link>
-        <Link style={padding} to="/create">new blog</Link>
-        {user === null
-          ? <Link style={padding} to="/login"><div style={{ display: 'inline-flex' }}>login</div></Link>
-          : <button onClick={handleLogout}>logout</button>
-        }
-      </div>
+    <Container style={{paddingLeft: '0'}}>
+      <AppBar>
+        <Toolbar>
+          <Button color="inherit" component={Link} to="/">blogs</Button>
+          <Button color="inherit" component={Link} to="/create">new blog</Button>
+          {user === null
+            ? <Button color="inherit" component={Link} to="/login">login</Button>
+            : <Button color="inherit" onClick={handleLogout}>logout</Button>
+          }
+        </Toolbar>
+      </AppBar>
 
       <Routes>
         <Route path="/" element={

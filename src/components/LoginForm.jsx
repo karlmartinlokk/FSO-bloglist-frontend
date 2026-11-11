@@ -8,7 +8,7 @@ const LoginForm = ({
   password
 }) => {
   return(
-    <form onSubmit={handleLogin}>
+    <form onSubmit={handleLogin} style={{marginTop: '80px'}}>
       <div>
         <TextField
           type="text"
